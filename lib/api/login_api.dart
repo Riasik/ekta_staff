@@ -11,8 +11,8 @@ class ApiLogin {
       'user_phone': input};
     final response = await http.post(
         Constants.BASE_URI + Constants.SEND_VERIFICATION_CODE, body: queryParams);
-    print('$Constants.BASE_URI$Constants.SEND_VERIFICATION_CODE');
-    print('response: ${response?.body}');
+    //print('$Constants.BASE_URI$Constants.SEND_VERIFICATION_CODE');
+    //print('response: ${response?.body}');
     if(response.statusCode == 200){
       return Response.fromJson(json.decode(response.body));
     }else{

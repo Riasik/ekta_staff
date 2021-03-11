@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
     if(info.success == true){
       _userId = info.userId;
       print('user_id: $_userId');
-      var con = await DB.db.insertUser(User(userId: _userId,ref: _ref, date: TimeController.currentTimeInSeconds(),));
+      var con = await DB.db.insertUser(User(userId: _userId,ref: _ref, date: TimeController.currentTimeInSeconds(),status: 1));
       print(con.toString());
       Navigator.pushNamed(context, '/main');
     }else{

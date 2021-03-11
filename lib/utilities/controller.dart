@@ -10,10 +10,15 @@ class TimeController{
     return time;
   }
   static String getTime(int timestamp){
+    print(timestamp);
     return '${new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).hour} : ${new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).minute}';
   }
   static int currentTimeInSeconds() {
     var ms = (new DateTime.now()).millisecondsSinceEpoch;
     return (ms / 1000).round();
+  }
+  static String getTimeInWork(int time){
+    print(time);
+      return null;
   }
 }
