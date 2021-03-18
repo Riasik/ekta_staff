@@ -10,7 +10,7 @@ class TimeController{
     return time;
   }
   static String getTime(int timestamp){
-    print(timestamp);
+    //print(timestamp);
     return '${new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).hour} : ${new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).minute}';
   }
   static int currentTimeInSeconds() {

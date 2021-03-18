@@ -6,18 +6,25 @@ import 'package:ekta/model/response.dart';
 import 'package:ekta/model/user.dart';
 import 'package:ekta/utilities/constants.dart';
 import 'package:ekta/utilities/controller.dart';
+import 'package:ekta/utilities/location.dart';
 import 'package:ekta/widgets/main_header.dart';
 import 'package:ekta/widgets/time_in_work.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-
+import 'package:workmanager/workmanager.dart';
 import 'login_screen.dart';
+import 'package:ekta/utilities/notification.dart' as notif;
+
+
+const fetchBackground = "fetchBackground";
 
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
 }
+
 
 class _MainScreenState extends State<MainScreen> {
   Future<List<User>> _userList;
@@ -28,6 +35,17 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     updateUserList();
+
+    Workmanager.initialize(
+      callbackDispatcher,
+      isInDebugMode: true,
+    );
+
+    Workmanager.registerPeriodicTask(
+      "1",
+      fetchBackground,
+      frequency: Duration(minutes: 15),
+    );
   }
 
   updateUserList() {
@@ -168,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void getLocation() async {
-    var info = await Api().goToApi(userId: _user.userId.toString());
+    var info = await Api().goToApi(userId: _user.userId.toString(), user: _user);
     if (info.success == true) {
       //  в локации
       // print('info.text: $info');
@@ -221,5 +239,20 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     _timer.cancel();
     super.dispose();
+  }
+  void callbackDispatcher() {
+    Workmanager.executeTask((task, inputData) async {
+      switch (task) {
+        case fetchBackground:
+        //Geolocator geoLocator = Geolocator()..forceAndroidLocationManager = true;
+          Location location = Location();
+          await location.getCurrentLocation();
+          //Position userLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          notif.Notification notification = new notif.Notification();
+          notification.showNotificationWithoutSound(location);
+          break;
+      }
+      return Future.value(true);
+    });
   }
 }

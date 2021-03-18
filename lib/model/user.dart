@@ -35,5 +35,18 @@ class User {
     map['date'] = date;
     return map;
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['userId'] = this.userId;
+    data['date'] = this.date;
+    data['status'] = this.status;
+    data['timeStart'] = this.timeStart ?? '';
+    data['timeEnd'] = this.timeEnd ?? '';
+    data['ref'] = this.ref;
+    return data;
+  }
 }
+
 
